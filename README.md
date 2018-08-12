@@ -1,4 +1,4 @@
-#Local Docker environemnt: PHP + MYSQL + Mongo + Redis
+# Local Docker environemnt: PHP + MYSQL + Mongo + Redis
 
 
 A local dockerized environment running:
