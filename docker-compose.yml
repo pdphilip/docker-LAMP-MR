@@ -1,0 +1,36 @@
+version: '3'
+services:
+  php:
+    build: ./env/php
+    ports:
+      - '80:80'
+    environment:
+      MYSQL_HOST: 'mysql'
+      MYSQL_ROOT_USER: 'root'
+      MYSQL_ROOT_PASSWORD: 'pass'
+      MONGO_HOST: 'mongo'
+      REDIS_HOST: 'redis'
+      DEBUG: 'true'
+    volumes:
+      - ./sites:/var/www/html
+      - ./env/php/sites-enabled:/etc/apache2/sites-enabled
+  mysql:
+    build: ./env/mysql
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: pass
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+  mongo:
+    build: ./env/mongodb
+    ports:
+      - '27017:27017'
+    volumes:
+      - ./data/mongo/db:/data/db
+  redis:
+    build: ./env/redis
+    ports:
+      - '6379:6379'
+    volumes:
+      - ./data/redis:/data

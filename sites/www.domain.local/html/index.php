@@ -1,0 +1,4 @@
+WWW
+<?php
+
+phpinfo();
