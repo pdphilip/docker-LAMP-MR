@@ -5,7 +5,7 @@ services:
     ports:
       - '80:80'
     environment:
-      MYSQL_HOST: 'mysql'
+      MYSQL_HOST: '127.0.0.1'
       MYSQL_ROOT_USER: 'root'
       MYSQL_ROOT_PASSWORD: 'pass'
       MONGO_HOST: 'mongo'
@@ -31,6 +31,6 @@ services:
   redis:
     build: ./env/redis
     ports:
-      - '6379:6379'
+      - '127.0.0.1:6380:6379'
     volumes:
       - ./data/redis:/data
