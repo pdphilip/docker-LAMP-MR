@@ -2,9 +2,9 @@
 
 
 A local dockerized environment running:
-* PHP 7.1
+* PHP 7.4
 * MySQL 5.7
-* MongoDB 3.6
+* MongoDB 4.2
 * Redis 4.0
 
 (Setup instructions for Mac users)
@@ -24,23 +24,23 @@ git clone https://github.com/pdphilip/docker-LAMP-MR.git MY_ENV
 ### Step 2 - set up hosts  
 For example:  
 
-* www.domain.local
-* api.domain.local
+* www.domain.loc
+* api.domain.loc
 
 ### Step 2.1 - edit sites-enabled
 in env/php/sites-enabled/   
 
-* www.domain.local.conf
-* api.domain.local.conf
+* www.domain.loc.conf
+* api.domain.loc.conf
 
 Edit domain_name variable on first line:  
 
 ```bash
-Define domain_name www.domain.local
+Define domain_name www.domain.loc
 ```
 
 ```bash
-Define domain_name api.domain.local
+Define domain_name api.domain.loc
 ```
 
 ### Step 2.2 - edit Mac host file
@@ -48,15 +48,15 @@ Via Terminal:
 
 ```bash
 sudo nano /etc/hosts
-```	 
+```
 
 Then add in:  
 
 ```bash
 0.0.0.0 localhost
-0.0.0.0 www.domain.local
-0.0.0.0 api.domain.local
-```	 
+0.0.0.0 www.domain.loc
+0.0.0.0 api.domain.loc
+```
 
 ### Step 3 - docker-compose build
 
@@ -64,15 +64,15 @@ In repo root, run:
 
 ```bash
 docker-compose build
-```	 
+```
 
 ## Running: 
 In repo root, run:   
 
 ```bash
 docker-compose up
-```	 	
-	
+```
+
 ## Notes:   
 
 * Local site files root in ./sites/{domain}/html
