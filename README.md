@@ -17,7 +17,7 @@ Install [Docker](https://www.docker.com/products/docker-desktop)
 ## Setup   
 ### Step 1 - clone environment
 
-Clone the envormaent into a folder of your choice {MY_ENV}:
+Clone the environment into a folder of your choice {MY_ENV}:
 
 ```bash
 git clone https://github.com/pdphilip/docker-LAMP-MR.git MY_ENV
@@ -116,7 +116,7 @@ Your local environment should be up and running on:
     - port: **6379**
 
 
-If you would like to simulate 3 Elastic search nodes, then use `docker-compose-es3.yml`
+If you would like to simulate 3 Elasticsearch nodes, then use `docker-compose-es3.yml`
 
 ## Notes:
 * Local site files root in ./sites/{domain}/html
