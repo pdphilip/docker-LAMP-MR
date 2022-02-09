@@ -1,0 +1,90 @@
+version: '3'
+services:
+  php:
+    build: ./env/php
+    ports:
+      - '80:80'
+    environment:
+      MYSQL_HOST: '127.0.0.1'
+      MYSQL_ROOT_USER: 'root'
+      MYSQL_ROOT_PASSWORD: 'pass'
+      MONGO_HOST: 'mongo'
+      REDIS_HOST: 'redis'
+      DEBUG: 'true'
+    volumes:
+      - ./sites:/var/www/html
+      - ./env/php/sites-enabled:/etc/apache2/sites-enabled
+  mysql:
+    build: ./env/mysql
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: pass
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+  mongo:
+    build: ./env/mongodb
+    ports:
+      - '27017:27017'
+    volumes:
+      - ./data/mongo/db:/data/db
+  redis:
+    build: ./env/redis
+    ports:
+      - '127.0.0.1:6380:6379'
+    volumes:
+      - ./data/redis:/data
+  es01:
+    build: ./env/elasticsearch
+    environment:
+      - node.name=es01
+      - cluster.name=es-docker-cluster
+      - discovery.seed_hosts=es02,es03
+      - cluster.initial_master_nodes=es01,es02,es03
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./data/esdata/01:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+  es02:
+    build: ./env/elasticsearch
+    environment:
+      - node.name=es02
+      - cluster.name=es-docker-cluster
+      - discovery.seed_hosts=es01,es03
+      - cluster.initial_master_nodes=es01,es02,es03
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./data/esdata/02:/usr/share/elasticsearch/data
+  es03:
+    build: ./env/elasticsearch
+    environment:
+      - node.name=es03
+      - cluster.name=es-docker-cluster
+      - discovery.seed_hosts=es01,es02
+      - cluster.initial_master_nodes=es01,es02,es03
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./data/esdata/03:/usr/share/elasticsearch/data
+  kib01:
+    build: ./env/kibana
+    ports:
+      - 5601:5601
+    environment:
+      ELASTICSEARCH_URL: http://es01:9200
+      ELASTICSEARCH_HOSTS: '["http://es01:9200","http://es02:9200","http://es03:9200"]'

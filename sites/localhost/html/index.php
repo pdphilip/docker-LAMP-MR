@@ -1,1 +1,3 @@
 -> Localhost root
+<?php
+phpinfo();
