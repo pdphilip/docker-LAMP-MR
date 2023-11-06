@@ -15,6 +15,7 @@ services:
       - ./sites:/var/www/html
       - ./env/php/sites-enabled:/etc/apache2/sites-enabled
   mysql:
+    # platform: linux/x86_64  # M-chip mac users
     build: ./env/mysql
     ports:
       - '3306:3306'
@@ -31,25 +32,35 @@ services:
   redis:
     build: ./env/redis
     ports:
-      - '127.0.0.1:6380:6379'
+      - '127.0.0.1:6379:6379'
     volumes:
       - ./data/redis:/data
   elasticsearch:
-    build: ./env/elasticsearch
     hostname: elasticsearch
+    build: ./env/elasticsearch
+    volumes:
+      - ./data/elasticsearch:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
     environment:
-      - discovery.type=single-node
+      - node.name=es01
       - cluster.name=docker-cluster
+      - cluster.initial_master_nodes=es01
+      - cluster.routing.allocation.disk.watermark.low=2gb
+      - cluster.routing.allocation.disk.watermark.high=1gb
+      - cluster.routing.allocation.disk.watermark.flood_stage=500mb
+      - cluster.info.update.interval=1m
+      - ELASTIC_PASSWORD=LOCALPASS
       - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=false
+      - xpack.license.self_generated.type=basic
+      - xpack.security.authc.api_key.enabled=true
+      - indices.id_field_data.enabled=true
+    mem_limit: 1073741824
     ulimits:
       memlock:
         soft: -1
         hard: -1
-    volumes:
-      - ./data/esdata/single:/usr/share/elasticsearch/data
-    ports:
-      - "9200:9200"
   kibana:
     build: ./env/kibana
     environment:
